@@ -3,14 +3,17 @@ package synthesizer;
 import java.util.Iterator;
 
 public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
-    int first;//store the first item in the queue
-    int last;//store the index one beyond the most recently inserted item
-    T[] items;
+    private int first;//store the first item in the queue
+    private int last;//store the index one beyond the most recently inserted item
+    private T[] items;
 
     public ArrayRingBuffer(int c) {
         capacity = c;
         first = capacity / 2;
         last = first + 1;
+        if(last == capacity) {
+            last = 0;
+        }
         items = (T[]) new Object[capacity];
         fillCount = 0;
     }
@@ -55,6 +58,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
             fillCount--;
             if(isEmpty()) {
                 last = first + 1;
+                if(last == capacity) {
+                    last = 0;
+                }
             }
             return temp;
         }
@@ -62,6 +68,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         fillCount--;
         if(isEmpty()) {
             last = first + 1;
+            if(last == capacity) {
+                last = 0;
+            }
         }
         return temp;
     }
